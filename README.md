@@ -1,4 +1,4 @@
-# xxz_spinchain
+# XXZ - spin chain simulation 
 A simulator for different types of Heisenberg XXZ spin chains with spin 1/2-particles written in python. For an easy introduction to simulating a spin chain with the code use the introduction.ipynb notebook. If you want to understand the simulation in more detail you can look through the .py files.
 
 # Introduction
