@@ -1,3 +1,7 @@
+"""
+This module contains all quantum mechanics helper function, such as different operators and observables
+"""
+
 import numpy as np
 from np_helper import state_to_num,indexOfState
 from scipy.sparse import lil_matrix
@@ -5,14 +9,17 @@ from scipy.sparse import lil_matrix
 
 states_num_glob = []
 
-"""Constructing the hamiltonian for the reduced size
-    Input:  states_np   : np.array  : States in numpy array form
+
+def constructHamilton(states_num,J,r,epsilons,num_part):
+	"""Constructing the hamiltonian with NN interaction and open boundary conditions
+
+    Input:  states_num  : np.array  : Numpy array of states in integer form
             J           : float     : Coupling constant for spin flips
             r           : float     : Coupling constant for s_z term
+			epsilons	: np.array	: Array of magnetic field applied on each site
             num_part    : num_part  : Number of particles
-    Output: ham         : csr-arr   : Hamiltonian of the reduced size in a sparse array format   
-"""
-def constructHamilton(states_num,J,r,epsilons,num_part):
+    Output: ham         : csr-arr   : Hamiltonian of the reduced size in a sparse array format   	
+	"""
     #save the states to global variable
     global states_num_glob
     states_num_glob = states_num
@@ -43,6 +50,15 @@ def constructHamilton(states_num,J,r,epsilons,num_part):
     return ham.tocsr()
 
 def constructHamiltonPeriodic(states_num,J,r,epsilons,num_part):
+	"""Constructing the hamiltonian with NN interaction and periodic boundary conditions
+
+    Input:  states_num  : np.array  : Numpy array of states in integer form
+            J           : float     : Coupling constant for spin flips
+            r           : float     : Coupling constant for s_z term
+			epsilons	: np.array	: Array of magnetic field applied on each site
+            num_part    : num_part  : Number of particles
+    Output: ham         : csr-arr   : Hamiltonian of the reduced size in a sparse array format   	
+	"""
     #save the states to global variable
     global states_num_glob
     states_num_glob = states_num
@@ -76,6 +92,17 @@ def constructHamiltonPeriodic(states_num,J,r,epsilons,num_part):
     return ham.tocsr()
 
 def constructHamiltonNNN(states_num,J,r,J2,r2,epsilons,num_part):
+	"""Constructing the hamiltonian with NNN interaction with open boundary conditions
+
+    Input:  states_num  : np.array  : Numpy array of states in integer form
+            J           : float     : Coupling constant for NN spin flips
+            r           : float     : Coupling constant for NN s_z term
+			J2			: float		: Coupling constant for NNN spin flips
+			r2			: float		: Coupling constant for NNN s_z term
+			epsilons	: np.array	: Array of magnetic field applied on each site
+            num_part    : num_part  : Number of particles
+    Output: ham         : csr-arr   : Hamiltonian of the reduced size in a sparse array format   	
+	"""
     #First construct NN hamiltonian
     # save the states to global variable
     global states_num_glob
@@ -117,6 +144,17 @@ def constructHamiltonNNN(states_num,J,r,J2,r2,epsilons,num_part):
     return ham.tocsr()
 
 def constructHamiltonPeriodicNNN(states_num,J,r,J2,r2,epsilons,num_part):
+	"""Constructing the hamiltonian with NNN interaction with periodic boundary conditions
+
+    Input:  states_num  : np.array  : Numpy array of states in integer form
+            J           : float     : Coupling constant for NN spin flips
+            r           : float     : Coupling constant for NN s_z term
+			J2			: float		: Coupling constant for NNN spin flips
+			r2			: float		: Coupling constant for NNN s_z term
+			epsilons	: np.array	: Array of magnetic field applied on each site
+            num_part    : num_part  : Number of particles
+    Output: ham         : csr-arr   : Hamiltonian of the reduced size in a sparse array format   	
+	"""
     #First construct NN hamiltonian
     # save the states to global variable
     global states_num_glob
@@ -165,8 +203,13 @@ def constructHamiltonPeriodicNNN(states_num,J,r,J2,r2,epsilons,num_part):
                 ham[k,i] -= J2
     return ham.tocsr()
 
-"""Constructing the magnetization matrix for given states and given particle list"""
 def constructMagnetization(states_num,particles):
+	"""Constructing the magnetization matrix
+	
+	Input:	states_num	: np.array	: Numpy array of state integers
+			particles	: int		: Number of particles in the system
+	Output:	mag			: csr-arr	: Magnetization operator for the system
+	"""
     #define matrix
     mag = lil_matrix((states_num.shape[0],states_num.shape[0]))
     #set elements
@@ -177,10 +220,9 @@ def constructMagnetization(states_num,particles):
 
     return 0
 
-""" Function that calculates the spin operator s_z and s_z on particles i and j 
-    to a given state in decimal number representation
-    WATCH OUT: i and j are counted from behind"""
+
 def sz_sz(i,j,state_num):
+	""" Function that calculates the spin operator s_z and s_z on particles i and j to a given integer state"""
     #if you give a list of states to the function
     if type(state_num) == np.ndarray:
         res = np.empty(state_num.shape[0])
@@ -192,9 +234,7 @@ def sz_sz(i,j,state_num):
     elif np.bitwise_and(2**i,state_num) == 0 and np.bitwise_and(2**j,state_num) == 0: return 1/4
     else: return -1/4
 
-""" Function that calculates the spin operator S_+ and S_- on particles i and j 
-    to a given state in decimal number representation
-    WATCH OUT: i and j are counted from behind"""
+""" Function that calculates the spin operator S_+ and S_- on particles i and j to a given integer state"""
 def sp_sm(i,j,state_num):
     #spin-i down and spin-j up
     if np.bitwise_and(2**i,state_num) == 0 and np.bitwise_and(2**j,state_num) == 2**j:
@@ -202,9 +242,7 @@ def sp_sm(i,j,state_num):
     return None
 
 
-""" Function that calculates the spin operator S_- and S_+ on particles i and j 
-    to a given state in decimal number representation
-    WATCH OUT: i and j are counted from behind"""
+""" Function that calculates the spin operator S_- and S_+ on particles i and j to a given integer state"""
 def sm_sp(i,j,state_num):
     #spin-i up and spin-j down
     if np.bitwise_and(2**i,state_num) == 2**i and np.bitwise_and(2**j,state_num) == 0:
@@ -212,17 +250,20 @@ def sm_sp(i,j,state_num):
     return None
 
 
-""" Function that calculates the spin operator S_z on particle i to a given state in decimal number representation
-    WATCH OUT: i is counted from behind"""
+""" Function that calculates the spin operator S_z on particle i to a given integer state"""
 def sz(i,state_num):
     if np.bitwise_and(2**i,state_num) == 2**i: return 1/2
     else: return -1/2
 
 
-"""Calculating the partial trace on a given coefficient array
-    coeffs is a 2d numpy array which contains all coeffs for different times
-"""
 def partial_trace(dens_mat, j_list,num_parts,states):
+	"""Calculating the partial trace on a given density matrix
+
+	Input:	dens_mat	: np.array	: Density matrix
+			j_list		: np.array	: List of particles that should be traced out
+			num_parts	: int		: Number of particles
+			states		: np.array	: Numpy array of all integer states
+	"""
     states_num_glob = states
     if type(j_list) == int:
         j_list = np.array([j_list])
@@ -273,16 +314,18 @@ def partial_trace(dens_mat, j_list,num_parts,states):
     return red_dens
 
 def density_matrix(coeffs):
+	"""Calculate the density matrix to a given coefficient list"""
     return np.outer(coeffs,np.conjugate(coeffs))
 
 def entropy_vn(rho):
+	"""Calculates the von Neumann entropy to a given density matrix"""
     eigvals = np.linalg.eigvals(rho)
     eigvals = eigvals[eigvals > 0]
     sum_list = - eigvals*np.log(eigvals)
     return np.sum(sum_list)
 
-"""Calculates the trace distance between two densitiy matrices"""
 def trace_dist(rho1,rho2):
+	"""Calculates the trace distance between two densitiy matrices"""
     rho = rho1-rho2
     rho = np.sqrt(np.dot(np.conjugate(np.transpose(rho)),rho))
     eigvals = np.linalg.eigvals(rho)
