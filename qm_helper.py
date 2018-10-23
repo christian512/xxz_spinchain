@@ -11,7 +11,7 @@ states_num_glob = []
 
 
 def constructHamilton(states_num,J,r,epsilons,num_part):
-	"""Constructing the hamiltonian with NN interaction and open boundary conditions
+    """Constructing the hamiltonian with NN interaction and open boundary conditions
 
     Input:  states_num  : np.array  : Numpy array of states in integer form
             J           : float     : Coupling constant for spin flips
@@ -50,7 +50,7 @@ def constructHamilton(states_num,J,r,epsilons,num_part):
     return ham.tocsr()
 
 def constructHamiltonPeriodic(states_num,J,r,epsilons,num_part):
-	"""Constructing the hamiltonian with NN interaction and periodic boundary conditions
+    """Constructing the hamiltonian with NN interaction and periodic boundary conditions
 
     Input:  states_num  : np.array  : Numpy array of states in integer form
             J           : float     : Coupling constant for spin flips
@@ -92,7 +92,7 @@ def constructHamiltonPeriodic(states_num,J,r,epsilons,num_part):
     return ham.tocsr()
 
 def constructHamiltonNNN(states_num,J,r,J2,r2,epsilons,num_part):
-	"""Constructing the hamiltonian with NNN interaction with open boundary conditions
+    """Constructing the hamiltonian with NNN interaction with open boundary conditions
 
     Input:  states_num  : np.array  : Numpy array of states in integer form
             J           : float     : Coupling constant for NN spin flips
@@ -144,7 +144,7 @@ def constructHamiltonNNN(states_num,J,r,J2,r2,epsilons,num_part):
     return ham.tocsr()
 
 def constructHamiltonPeriodicNNN(states_num,J,r,J2,r2,epsilons,num_part):
-	"""Constructing the hamiltonian with NNN interaction with periodic boundary conditions
+    """Constructing the hamiltonian with NNN interaction with periodic boundary conditions
 
     Input:  states_num  : np.array  : Numpy array of states in integer form
             J           : float     : Coupling constant for NN spin flips
@@ -154,7 +154,7 @@ def constructHamiltonPeriodicNNN(states_num,J,r,J2,r2,epsilons,num_part):
 			epsilons	: np.array	: Array of magnetic field applied on each site
             num_part    : num_part  : Number of particles
     Output: ham         : csr-arr   : Hamiltonian of the reduced size in a sparse array format   	
-	"""
+    """
     #First construct NN hamiltonian
     # save the states to global variable
     global states_num_glob
@@ -204,7 +204,7 @@ def constructHamiltonPeriodicNNN(states_num,J,r,J2,r2,epsilons,num_part):
     return ham.tocsr()
 
 def constructMagnetization(states_num,particles):
-	"""Constructing the magnetization matrix
+    """Constructing the magnetization matrix
 	
 	Input:	states_num	: np.array	: Numpy array of state integers
 			particles	: int		: Number of particles in the system
@@ -222,7 +222,7 @@ def constructMagnetization(states_num,particles):
 
 
 def sz_sz(i,j,state_num):
-	""" Function that calculates the spin operator s_z and s_z on particles i and j to a given integer state"""
+    """ Function that calculates the spin operator s_z and s_z on particles i and j to a given integer state"""
     #if you give a list of states to the function
     if type(state_num) == np.ndarray:
         res = np.empty(state_num.shape[0])
@@ -257,7 +257,7 @@ def sz(i,state_num):
 
 
 def partial_trace(dens_mat, j_list,num_parts,states):
-	"""Calculating the partial trace on a given density matrix
+    """Calculating the partial trace on a given density matrix
 
 	Input:	dens_mat	: np.array	: Density matrix
 			j_list		: np.array	: List of particles that should be traced out
@@ -314,18 +314,18 @@ def partial_trace(dens_mat, j_list,num_parts,states):
     return red_dens
 
 def density_matrix(coeffs):
-	"""Calculate the density matrix to a given coefficient list"""
+    """Calculate the density matrix to a given coefficient list"""
     return np.outer(coeffs,np.conjugate(coeffs))
 
 def entropy_vn(rho):
-	"""Calculates the von Neumann entropy to a given density matrix"""
+    """Calculates the von Neumann entropy to a given density matrix"""
     eigvals = np.linalg.eigvals(rho)
     eigvals = eigvals[eigvals > 0]
     sum_list = - eigvals*np.log(eigvals)
     return np.sum(sum_list)
 
 def trace_dist(rho1,rho2):
-	"""Calculates the trace distance between two densitiy matrices"""
+    """Calculates the trace distance between two densitiy matrices"""
     rho = rho1-rho2
     rho = np.sqrt(np.dot(np.conjugate(np.transpose(rho)),rho))
     eigvals = np.linalg.eigvals(rho)

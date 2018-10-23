@@ -2,7 +2,7 @@ import numpy as np
 
 
 def state_to_num(state):
-	"""Converts a state in a binary array form [0,1,0,..,1] to a integer"""
+    """Converts a state in a binary array form [0,1,0,..,1] to a integer"""
     if len(state.shape) == 2:
         c = 2 ** np.arange(state.shape[1])[::-1]
         nums = np.empty(state.shape[0],dtype=int)
@@ -15,7 +15,7 @@ def state_to_num(state):
 
 
 def indexOfState(state_num,states):
-	"""Finds the index of a specific state in the states array"""
+    """Finds the index of a specific state in the states array"""
     if states == []:
         print('no states provided ')
         return None
@@ -25,7 +25,7 @@ def indexOfState(state_num,states):
 
 
 def store_states(states,num_part,filename):
-	"""Storing the states to a file. Also needs number of particles num_part."""
+    """Storing the states to a file. Also needs number of particles num_part."""
     f = open(filename,'w')
     for i in range(states.shape[0]):
         f.write(str(i) + '\t :' + bin_rep(states[i],num_part))
@@ -35,7 +35,7 @@ def store_states(states,num_part,filename):
 
 
 def bin_rep(state, num_part):
-	""""Corrects binary representation of a state given the number of particles"""
+    """"Corrects binary representation of a state given the number of particles"""
     s = np.binary_repr(state)
     if len(s) < num_part:
         s = '0'*(num_part-len(s))+ s
@@ -43,7 +43,7 @@ def bin_rep(state, num_part):
 
 
 def read_states(file):
-	"""Reads states from file"""
+    """Reads states from file"""
     f = open(file, 'r')
     content = f.readlines()
     for i in range(len(content)):

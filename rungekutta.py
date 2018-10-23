@@ -2,7 +2,7 @@ import numpy as np
 from scipy.sparse import csr_matrix
 
 def runge_kutta_vec(mat, vector,h,t_end,t_start=0):
-	"""Vectorial Runge Kutta integrator
+    """Vectorial Runge Kutta integrator
 
 	Input:	mat		: np.array	: Matrix which is multiplied to the vector for each time step
 			vector	: np.array	: Vector of the current state
@@ -11,7 +11,7 @@ def runge_kutta_vec(mat, vector,h,t_end,t_start=0):
 			t_start	: float		: starttime of simulation
 
 	Output:	(t_list,ret_list)	: (np.array,np.array) : List of all times and vectors for that times simulated
-	"""
+    """
     steps = int((t_end-t_start)/h)
     ret_list = [None]*(steps+1)
     t_list = np.empty(steps+1)
@@ -38,15 +38,15 @@ def runge_kutta_vec(mat, vector,h,t_end,t_start=0):
     return (t_list,ret_list)
 #Mat needs to be csr_matrix not np.ndarray
 def runge_kutta_vec_onerun(mat,vector,h,t_start):
-	""" Calculates only one Runge Kutta step
+    """ Calculates only one Runge Kutta step
 
 	Input:	mat		: np.array	: Matrix which is multiplied for each time step
 			vector	: np.array	: Current state of the system
 			h 		: float		: time step
 			t_start	: float		: start time of the simulation
 
-	Output: (t,vector) : (float,np.array) : time and state of system after time step
-	"""
+    Output: (t,vector) : (float,np.array) : time and state of system after time step
+    """
     k1 = mat.dot(vector)
     k2 = mat.dot(vector + h / 2 * k1)
     k3 = mat.dot(vector + h / 2 * k2)

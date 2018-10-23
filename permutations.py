@@ -7,7 +7,7 @@ import math
 
 
 def next_permutation(arr):
-	"""Calculates next permutation from an array arr filled with zeros and ones"""
+    """Calculates next permutation from an array arr filled with zeros and ones"""
     # Find non-increasing suffix
     i = len(arr) - 1
     while i > 0 and arr[i - 1] >= arr[i]:
@@ -26,8 +26,8 @@ def next_permutation(arr):
     return True
 
 def all_perm(N):
-	"""Calculates permutations of arrays with length N containing 0, ..., N ones (otherwise zeros)"""
-	#initialize array of needed size
+    """Calculates permutations of arrays with length N containing 0, ..., N ones (otherwise zeros)"""
+    #initialize array of needed size
     res = [None] * 2 ** N
     res = np.zeros((2 ** N, N), dtype=int)
     count = 0
@@ -43,7 +43,7 @@ def all_perm(N):
     return res
 
 def special_perm(N, j):
-	"""Calculates all permutations of array (filled with zeros and ones) with length N containing j ones"""
+    """Calculates all permutations of array (filled with zeros and ones) with length N containing j ones"""
     if j > N:
         print('Error in permutations.py special_perm(N,j) : j larger than N')
         return 0
